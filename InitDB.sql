@@ -1,78 +1,71 @@
-create table COMPANIES
+CREATE TABLE  developers
 (
-    ID              INTEGER auto_increment
-        primary key,
-    COMPANY_NAME    CHARACTER VARYING(30)  not null,
-    COMPANY_ADDRESS CHARACTER VARYING(100) not null
+	id SERIAL PRIMARY KEY,
+	developer_name VARCHAR(30) NOT NULL,
+	developer_age INT,
+	developer_sex VARCHAR(1) NOT NULL
 );
 
-create table CUSTOMERS
+CREATE TABLE skills
 (
-    ID             INTEGER auto_increment
-        primary key,
-    CUSTOMER_NAME  CHARACTER VARYING(30) not null,
-    CUSTOMER_PHONE CHARACTER VARYING(20) not null
+	id SERIAL PRIMARY KEY,
+	language VARCHAR(15) NOT NULL,
+	skill_lvl VARCHAR(15) NOT NULL
 );
 
-create table DEVELOPERS
+CREATE TABLE projects
 (
-    ID             INTEGER auto_increment
-        primary key,
-    DEVELOPER_NAME CHARACTER VARYING(30) not null,
-    DEVELOPER_AGE  INTEGER,
-    DEVELOPER_SEX  CHARACTER VARYING(1)  not null
+	id SERIAL PRIMARY KEY,
+	project_name VARCHAR(30) NOT NULL,
+	project_start_date DATE
 );
 
-create table PROJECTS
+CREATE TABLE companies
 (
-    ID                 INTEGER auto_increment
-        primary key,
-    PROJECT_NAME       CHARACTER VARYING(30) not null,
-    PROJECT_START_DATE DATE
+	id SERIAL PRIMARY KEY,
+	company_name VARCHAR(30) NOT NULL,
+	company_address VARCHAR(100) NOT NULL
 );
 
-create table COMPANIES_PROJECTS_RELATION
+CREATE TABLE customers
 (
-    COMPANY_ID INTEGER not null
-        references COMPANIES,
-    PROJECT_ID INTEGER not null
-        references PROJECTS,
-    unique (COMPANY_ID, PROJECT_ID)
+	id SERIAL PRIMARY KEY,
+	customer_name VARCHAR(30) NOT NULL,
+	customer_phone VARCHAR(20) NOT NULL
 );
 
-create table CUSTOMERS_PROJECTS_RELATION
+CREATE TABLE Developers_Projects_Relation
 (
-    CUSTOMER_ID INTEGER not null
-        references CUSTOMERS,
-    PROJECT_ID  INTEGER not null
-        references PROJECTS,
-    unique (CUSTOMER_ID, PROJECT_ID)
+	developer_id INT NOT NULL,
+	project_id INT NOT NULL,
+	FOREIGN KEY (developer_id) REFERENCES developers (id),
+	FOREIGN KEY (project_id) REFERENCES projects (id),
+	UNIQUE (developer_id, project_id)
 );
 
-create table DEVELOPERS_PROJECTS_RELATION
+CREATE TABLE Developers_Skills_Relation
 (
-    DEVELOPER_ID INTEGER not null
-        references DEVELOPERS,
-    PROJECT_ID   INTEGER not null
-        references PROJECTS,
-    unique (DEVELOPER_ID, PROJECT_ID)
+	developer_id INT NOT NULL,
+	skill_id INT NOT NULL,
+	FOREIGN KEY (developer_id) REFERENCES developers (id),
+	FOREIGN KEY (skill_id) REFERENCES skills (id),
+	UNIQUE (developer_id, skill_id)
 );
 
-create table SKILLS
+CREATE TABLE Companies_Projects_Relation
 (
-    ID        INTEGER auto_increment
-        primary key,
-    LANGUAGE  CHARACTER VARYING(15) not null,
-    SKILL_LVL CHARACTER VARYING(15) not null
+	company_id INT NOT NULL,
+	project_id INT NOT NULL,
+	FOREIGN KEY (company_id) REFERENCES companies (id),
+	FOREIGN KEY (project_id) REFERENCES projects (id),
+	UNIQUE (company_id, project_id)
 );
 
-create table DEVELOPERS_SKILLS_RELATION
+CREATE TABLE Customers_Projects_Relation
 (
-    DEVELOPER_ID INTEGER not null
-        references DEVELOPERS,
-    SKILL_ID     INTEGER not null
-        references SKILLS,
-    unique (DEVELOPER_ID, SKILL_ID)
+	customer_id INT NOT NULL,
+	project_id INT NOT NULL,
+	FOREIGN KEY (customer_id) REFERENCES customers (id),
+	FOREIGN KEY (project_id) REFERENCES projects (id),
+	UNIQUE (customer_id, project_id)
 );
-
-
